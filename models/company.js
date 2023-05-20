@@ -147,7 +147,6 @@ class Company {
                                 description, 
                                 num_employees AS "numEmployees", 
                                 logo_url AS "logoUrl"`;
-    console.log(querySql);
     const result = await db.query(querySql, [...values, handle]);
     const company = result.rows[0];
 
