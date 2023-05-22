@@ -13,15 +13,15 @@ class Job {
    *
    * Returns { id, title, salary, equity, companyHandle }
    **/
-  static async create({ title, salary, equity, company_handle }) {
+  static async create({ title, salary, equity, companyHandle }) {
     const result = await db.query(
         `INSERT INTO jobs (title,
             salary,
             equity,
             company_handle)
         VALUES ($1, $2, $3, $4)
-        RETURNING id, title, salary, equity, company_handle as "companyHandle`,
-        [title, salary, equity, company_handle]
+        RETURNING id, title, salary, equity, company_handle as "companyHandle"`,
+        [title, salary, equity, companyHandle]
     );
     let job = result.rows[0];
 
@@ -43,8 +43,8 @@ class Job {
         j.title,
         j.salary,
         j.equity,
-        j.company_handle as "companyHandle,
-        c.name as "companyName
+        j.company_handle as "companyHandle",
+        c.name as "companyName"
       FROM jobs j
       LEFT JOIN companies as c ON c.handle = j.company_handle`;
     
@@ -115,7 +115,7 @@ class Job {
     );
 
     delete job.companyHandle;
-    job.company = companiesRes.rows[0];
+    job.company = companyRes.rows[0];
 
     return job;
   }
@@ -144,8 +144,8 @@ class Job {
                       RETURNING id,
                                 title,
                                 salary,
-                                equity
-                                company_handle as "companyHandle`;
+                                equity,
+                                company_handle AS "companyHandle"`;
     const result = await db.query(querySql, [...values, id]);
     const job = result.rows[0];
 
